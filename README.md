@@ -1,2 +1,2 @@
 # Docker Terragrunt
-An always up to date [terragrunt](https://github.com/gruntwork-io/terragrunt/) 
+This is a fork of [chrisns/docker-terragrunt](https://github.com/chrisns/docker-terragrunt), in order to keep Terragrunt and Terraform up to date.  
