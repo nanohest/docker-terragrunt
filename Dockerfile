@@ -1,9 +1,11 @@
-FROM golang:1 as terragrunt
-RUN go get github.com/gruntwork-io/terragrunt
-RUN CGO_ENABLED=0 GOOS=linux go build -a -ldflags '-extldflags "-static"' github.com/gruntwork-io/terragrunt
+ARG TERRAGRUNT_VERSION=0.16.7
+
+FROM appropriate/curl as download
+ARG TERRAGRUNT_VERSION
+RUN curl --location --output /terragrunt \
+ "https://github.com/gruntwork-io/terragrunt/releases/download/v${TERRAGRUNT_VERSION}/terragrunt_linux_amd64"
 
 FROM hashicorp/terraform:light
-RUN apk add libc6-compat
-COPY --from=terragrunt /go/bin/terragrunt /bin
+COPY --from=download /terragrunt /bin
+RUN apk add libc6-compat && chmod +x /bin/terragrunt
 ENTRYPOINT ["/bin/terragrunt"]
-
